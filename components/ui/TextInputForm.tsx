@@ -33,7 +33,7 @@ export default function TextInputForm({ onResult }: any) {
       <button
         type="submit"
         disabled={loading}
-        className="bg-blue-600 text-white px-4 py-2 rounded-md"
+        className="bg-indigo-900 text-white px-4 py-2 rounded-md cursor-pointer"
       >
         {loading ? "Cooking..." : "Generate Recipe"}
       </button>
