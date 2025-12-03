@@ -3,14 +3,24 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import { useAuthStatus } from "./components/AuthStatus";
 
 export default function Home() {
   const router = useRouter();
+  const { loggedIn } = useAuthStatus();
 
+  // const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
   const [input, setInput] = useState("");
   const [recipeList, setRecipeList] = useState<string[]>([]);
   const [showIndex, setShowIndex] = useState(0);
+  // useEffect(() => {
+  //   const supabase = createClient();
 
+  //   supabase.auth.getUser().then(({ data: { user } }) => {
+  //     setLoggedIn(!!user);
+  //   });
+  // }, []);
   const autoText = "eggs, tomatoes, rice";
 
   const recipePool = [
@@ -108,10 +118,10 @@ ${recipe.steps.map((step: string, i: number) => `${i + 1}. ${step}`).join("\n")}
         </div>
 
         <button
-          onClick={() => router.push("/getrecipe")}
+          onClick={() => router.push("/dashboard")}
           className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition"
         >
-          Get Started
+          {loggedIn ? "Dashboard" : " Get Started"}
         </button>
       </nav>
 
