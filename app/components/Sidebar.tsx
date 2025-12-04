@@ -1,21 +1,31 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
-import { useAuthStatus } from "./AuthStatus";
+import UserFromLocalStorage from "./UserFromLocalStorage";
 
 import { Boxes, TrendingUp, Camera, PanelRightOpen, Menu } from "lucide-react";
 import LogoutButton from "@/components/ui/LogoutButton";
+import PageLoader from "./PageLoader";
 
 interface SidebarProps {
   onToggle?: (isOpen: boolean, isMobile: boolean) => void;
 }
 
 export default function Sidebar({ onToggle }: SidebarProps) {
-  const { loggedIn, name } = useAuthStatus();
+  // const { loggedIn, name } = useAuthStatus();
   const pathname = usePathname();
+  const [auth, setAuth] = useState<{
+    loggedIn: boolean;
+    name: string | null;
+    email: string | null;
+  }>({
+    loggedIn: false,
+    name: null,
+    email: null,
+  });
 
   const [isOpen, setIsOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
@@ -45,9 +55,16 @@ export default function Sidebar({ onToggle }: SidebarProps) {
     onToggle?.(isOpen, isMobile);
   }, [isOpen, isMobile]);
 
+  const handleUserLoaded = useCallback((u: any) => {
+    console.log("Loaded auth data:", u);
+    setAuth(u);
+  }, []);
+
   return (
     <>
       {/* DESKTOP SIDEBAR */}
+      {!auth && <PageLoader />}
+      <UserFromLocalStorage onLoad={handleUserLoaded} />
       <div
         className={`hidden md:flex fixed top-0 left-0 h-screen bg-white shadow-lg flex-col
           transition-all duration-300 z-50
@@ -143,7 +160,7 @@ export default function Sidebar({ onToggle }: SidebarProps) {
 
         {/* Profile */}
         <div className="p-4 border-t border-gray-200 mt-auto">
-          {loggedIn && (
+          {
             <div
               className={`flex ${
                 isOpen
@@ -160,14 +177,15 @@ export default function Sidebar({ onToggle }: SidebarProps) {
                   onClick={() => redirect("/profile")}
                   className="w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold cursor-pointer"
                 >
-                  {name.charAt(0).toUpperCase()}
+                  {auth?.name ? auth.name.charAt(0).toUpperCase() : "U"}
                 </div>
-                {isOpen && <p className="font-medium">{name}</p>}
+
+                {isOpen && <p className="font-medium">{auth.name}</p>}
               </div>
 
               <LogoutButton />
             </div>
-          )}
+          }
         </div>
       </div>
 
@@ -215,9 +233,9 @@ export default function Sidebar({ onToggle }: SidebarProps) {
                 onClick={() => redirect("/profile")}
                 className="w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold cursor-pointer"
               >
-                {name.charAt(0).toUpperCase()}
+                {auth?.name ? auth.name.charAt(0).toUpperCase() : "U"}
               </div>
-              {isOpen && <p className="font-medium">{name}</p>}
+              {isOpen && <p className="font-medium">{auth.name}</p>}
             </div>
           </div>
 

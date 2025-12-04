@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
+import { useAuthStatus } from "../../components/AuthStatus";
 
 export default function Login() {
+  const { loggedIn, name } = useAuthStatus();
   const supabase = createClient();
   const router = useRouter();
 
