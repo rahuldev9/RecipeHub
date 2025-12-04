@@ -1,14 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useAuthStatus } from "./components/AuthStatus";
-
+import UserFromLocalStorage from "./components/UserFromLocalStorage";
 export default function Home() {
   const router = useRouter();
-  const { loggedIn } = useAuthStatus();
+
+  const [auth, setAuth] = useState<{
+    loggedIn: boolean;
+    name: string | null;
+    email: string | null;
+  }>({
+    loggedIn: false,
+    name: null,
+    email: null,
+  });
 
   // const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
   const [input, setInput] = useState("");
@@ -102,9 +111,14 @@ ${recipe.steps.map((step: string, i: number) => `${i + 1}. ${step}`).join("\n")}
     startCycle();
   }, []);
 
+  const handleUserLoaded = useCallback((u: any) => {
+    console.log("Loaded auth data:", u);
+    setAuth(u);
+  }, []);
   return (
     <div className="h-full bg-gradient-to-b from-orange-50 to-white text-gray-800 pb-40">
       {/* Navbar */}
+      <UserFromLocalStorage onLoad={handleUserLoaded} />
       <nav className="flex justify-between items-center max-w-6xl mx-auto px-6 py-4">
         <div className="flex items-center gap-2">
           <Image
@@ -121,7 +135,7 @@ ${recipe.steps.map((step: string, i: number) => `${i + 1}. ${step}`).join("\n")}
           onClick={() => router.push("/dashboard")}
           className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition"
         >
-          {loggedIn ? "Dashboard" : " Get Started"}
+          {auth.loggedIn ? "Dashboard" : " Get Started"}
         </button>
       </nav>
 

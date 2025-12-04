@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
+import PageLoader from "@/app/components/PageLoader";
 
 export default function SignUp() {
   const supabase = createClient();
@@ -85,11 +86,11 @@ export default function SignUp() {
     }
 
     setMessage("Check your email to confirm signup.");
-    setTimeout(() => router.push("/auth/login"), 1500);
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white flex items-center justify-center px-6">
+      {loading && <PageLoader text="Creating your account..." />}
       <form
         onSubmit={handleSignup}
         className="bg-white p-8 rounded-2xl shadow-xl max-w-sm w-full border border-orange-200 animate-fadeIn"

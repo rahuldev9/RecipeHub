@@ -21,17 +21,8 @@ export default function ProfilePage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [sidebarReady, setSidebarReady] = useState(false); // <-- NEW
-  const [user] = useState({
-    name: "John Doe",
-    email: "john@example.com",
-    avatar: "/avatar.jpg",
-  });
 
-  const handleLogout = () => {
-    alert("Logged out!");
-  };
   const handleUserLoaded = useCallback((u: any) => {
-    console.log("Loaded auth data:", u);
     setAuth(u);
   }, []);
   return (
@@ -79,12 +70,9 @@ export default function ProfilePage() {
 
             {/* Buttons */}
             <div className="flex flex-col gap-3">
-              <button
-                className="w-full py-3  text-white rounded-xl text-lg font-medium hover:bg-red-600 transition"
-                onClick={handleLogout}
-              >
+              <div className="w-full py-3  text-white rounded-xl text-lg font-medium hover:bg-red-600 transition">
                 <LogoutButton />
-              </button>
+              </div>
 
               <button className="w-full py-3 bg-gray-100 rounded-xl font-medium hover:bg-gray-200 transition">
                 Edit Profile
