@@ -1,13 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Sidebar from "../components/Sidebar";
 import PageLoader from "../components/PageLoader";
 import LogoutButton from "@/components/ui/LogoutButton";
-import { useAuthStatus } from "../components/AuthStatus";
+
+import UserFromLocalStorage from "../components/UserFromLocalStorage";
 
 export default function ProfilePage() {
-  const { loggedIn, name, email } = useAuthStatus();
+  const [auth, setAuth] = useState<{
+    loggedIn: boolean;
+    name: string | null;
+    email: string | null;
+  }>({
+    loggedIn: false,
+    name: null,
+    email: null,
+  });
+
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [sidebarReady, setSidebarReady] = useState(false); // <-- NEW
@@ -20,9 +30,13 @@ export default function ProfilePage() {
   const handleLogout = () => {
     alert("Logged out!");
   };
-
+  const handleUserLoaded = useCallback((u: any) => {
+    console.log("Loaded auth data:", u);
+    setAuth(u);
+  }, []);
   return (
     <div className="flex relative">
+      <UserFromLocalStorage onLoad={handleUserLoaded} />
       <Sidebar
         onToggle={(open, mobile) => {
           setSidebarOpen(open);
@@ -50,15 +64,15 @@ export default function ProfilePage() {
                flex items-center justify-center text-5xl 
                border-4 border-gray-200 shadow font-bold"
               >
-                {name.charAt(0).toUpperCase()}
+                {auth?.name ? auth.name.charAt(0).toUpperCase() : "U"}
               </div>
             </div>
 
             {/* Name */}
-            <h1 className="text-2xl font-bold">{name}</h1>
+            <h1 className="text-2xl font-bold">{auth.name}</h1>
 
             {/* Email */}
-            <p className="text-gray-600 mt-1">{email}</p>
+            <p className="text-gray-600 mt-1">{auth.email}</p>
 
             {/* Divider */}
             <div className="my-6 h-px bg-gray-200"></div>

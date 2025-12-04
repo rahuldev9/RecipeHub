@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import UserName from "../components/UserName";
+
 import DashboardClient from "../components/DashboardClient";
 
 export default async function Dashboard() {
@@ -13,15 +13,6 @@ export default async function Dashboard() {
 
   return (
     <DashboardClient>
-      <div className="bg-white p-10 rounded-2xl shadow-xl border border-orange-200 animate-fadeIn max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold text-orange-600">
-          Welcome, <UserName /> 👋
-        </h1>
-        <p className="text-gray-600 mt-2">
-          Here is your personalized RecipeHub dashboard.
-        </p>
-      </div>
-
       <style>
         {`
           @keyframes fadeIn {
