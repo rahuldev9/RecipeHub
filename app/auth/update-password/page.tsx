@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
+import PageLoader from "@/app/components/PageLoader";
 
 export default function UpdatePassword() {
   const supabase = createClient();
@@ -43,6 +44,7 @@ export default function UpdatePassword() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-orange-50 to-white px-6">
+      {loading && <PageLoader text="Password updating..." />}
       <form
         onSubmit={handleUpdate}
         className="bg-white p-8 rounded-2xl shadow-xl max-w-sm w-full border border-orange-200 animate-fadeIn"

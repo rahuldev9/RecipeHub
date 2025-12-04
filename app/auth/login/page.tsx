@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuthStatus } from "../../components/AuthStatus";
+import PageLoader from "@/app/components/PageLoader";
 
 export default function Login() {
   const { loggedIn, name } = useAuthStatus();
@@ -36,8 +37,6 @@ export default function Login() {
       password,
     });
 
-    setLoading(false);
-
     if (error) return setErrorMsg(error.message);
 
     router.push("/dashboard");
@@ -45,6 +44,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white flex items-center justify-center px-6">
+      {loading && <PageLoader text="Authenticating..." />}
       <form
         onSubmit={handleLogin}
         className="bg-white p-8 rounded-2xl shadow-xl max-w-sm w-full border border-orange-200 animate-fadeIn"

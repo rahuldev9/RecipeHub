@@ -56,7 +56,6 @@ export default function Sidebar({ onToggle }: SidebarProps) {
   }, [isOpen, isMobile]);
 
   const handleUserLoaded = useCallback((u: any) => {
-    console.log("Loaded auth data:", u);
     setAuth(u);
   }, []);
 
