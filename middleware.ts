@@ -79,14 +79,14 @@ export function middleware(request: NextRequest) {
     }
 
     // Check for authentication token
-    const token = request.cookies.get("supabase_token");
+    // const token = request.cookies.get("supabase_token");
 
-    // If no token and route is protected, redirect to sign-in
-    if (!token) {
-      const signInUrl = new URL("/signin", request.url);
-      signInUrl.searchParams.set("redirect", pathname);
-      return NextResponse.redirect(signInUrl);
-    }
+    // // If no token and route is protected, redirect to sign-in
+    // if (!token) {
+    //   const signInUrl = new URL("/signin", request.url);
+    //   signInUrl.searchParams.set("redirect", pathname);
+    //   return NextResponse.redirect(signInUrl);
+    // }
 
     // Create response for authenticated users
     const response = NextResponse.next({
