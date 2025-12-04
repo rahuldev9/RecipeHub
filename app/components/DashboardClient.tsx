@@ -40,7 +40,7 @@ export default function DashboardClient({
 
       {/* PAGE LOADER */}
       {!sidebarReady && <PageLoader />}
-      {!auth && <PageLoader />}
+      
 
       {/* MAIN CONTENT */}
       {sidebarReady && (

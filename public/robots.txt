@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://recipehub-five.vercel.app
+
+# Sitemaps
+Sitemap: https://recipehub-five.vercel.app/sitemap.xml
