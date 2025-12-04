@@ -36,9 +36,11 @@ export default function Login() {
       email,
       password,
     });
-    setLoading(false);
-    if (error) return setErrorMsg(error.message);
-    
+  
+    if (error) {
+       setLoading(false);
+      return setErrorMsg(error.message);
+    }
 
     router.push("/dashboard");
   }
